@@ -1,36 +1,72 @@
 class Solution {
-    public void merge(int[] nums1, int m, int[] nums2, int n) {
-        
-        int i=0;
-        int j=0;
-        List<Integer> arr = new ArrayList<>();
 
-        while(i<m && j<n){
-            // while(nums1[i] == 0) i++; 
-            // while(nums2[j] == 0) j++;
+    public void merge(int[] arr, int left, int mid, int right){
 
-            if(nums1[i] <= nums2[j]){
-                arr.add(nums1[i]);
-                i++;
+        int n1 = mid - left + 1;
+        int n2 = right - mid;
+
+        int[] leftarr = new int[n1];
+        int[] rightarr = new int[n2];
+
+        int k = left;
+
+        for(int i=0;i<n1;i++){
+            leftarr[i] = arr[k++];
+        }
+
+        k = mid+1;
+
+        for(int i=0;i<n2;i++){
+            rightarr[i] = arr[k++];
+        }
+
+        int leftindex = 0, rightindex = 0, mainindex = left;
+
+        while(leftindex < n1 && rightindex < n2){
+
+            if(leftarr[leftindex] < rightarr[rightindex]){
+                arr[mainindex++] = leftarr[leftindex++];
             }else{
-                arr.add(nums2[j]);
-                j++;
+                arr[mainindex++] = rightarr[rightindex++];
             }
 
         }
 
-        while(i<m){
-            arr.add(nums1[i]);
-            i++;
-        }
-        while(j<n){
-            arr.add(nums2[j]);
-            j++;
+        while(leftindex < n1){
+            arr[mainindex++] = leftarr[leftindex++];
         }
 
-        for(int k=0;k<arr.size();k++){
-            nums1[k] = arr.get(k);
+        while(rightindex < n2){
+            arr[mainindex++] = rightarr[rightindex++];
         }
 
+
+
+
+    }
+
+
+    public void mergesort(int[] nums, int s, int e){
+
+        if(s<e){
+            int mid = s + (e-s)/2;
+
+            mergesort(nums, s, mid);
+            mergesort(nums, mid+1, e);
+
+            merge(nums, s, mid, e);
+
+        }
+
+    }
+
+    public void merge(int[] nums1, int m, int[] nums2, int n) {
+
+        int j=0;
+        for(int i=m;i<n+m;i++){
+            nums1[i] = nums2[j++];
+        }
+
+        mergesort(nums1, 0, n+m-1);
     }
 }
