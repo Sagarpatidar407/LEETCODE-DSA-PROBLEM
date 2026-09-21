@@ -1,3 +1,5 @@
+import java.util.HashMap;
+
 class Solution {
     public boolean wordPattern(String pattern, String s) {
 
@@ -12,23 +14,23 @@ class Solution {
 
         for (int i = 0; i < pattern.length(); i++) {
 
-            char ch = pattern.charAt(i);
+            char curr = pattern.charAt(i);
             String word = words[i];
 
-            // pattern -> word
-            if (map1.containsKey(ch) &&
-                !map1.get(ch).equals(word)) {
+            // character -> word
+            if (map1.containsKey(curr) &&
+                !map1.get(curr).equals(word)) {
                 return false;
             }
 
-            // word -> pattern
+            // word -> character
             if (map2.containsKey(word) &&
-                map2.get(word) != ch) {
+                map2.get(word) != curr) {
                 return false;
             }
 
-            map1.put(ch, word);
-            map2.put(word, ch);
+            map1.put(curr, word);
+            map2.put(word, curr);
         }
 
         return true;
